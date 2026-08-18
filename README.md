@@ -228,3 +228,46 @@ To ensure code quality and project stability, we use a progressive contribution 
 Remember that maintaining this project requires significant effort. The maintainer appreciates your contributions but must prioritize long-term project health and stability. Not all contributions will be accepted, and that's okay.
 
 Thank you for helping make OpenFront better!
+
+---
+
+## 🚢 Local 1:1 Clone Deployment (this project)
+
+This checkout is a fully verified, self-contained clone. License/attribution
+notices are preserved as required by AGPL (code) and CC BY-SA (assets);
+`proprietary/` remains part of the complete software package per its license.
+
+### Verification status (all green)
+
+- `npx tsc --noEmit` ✅
+- `npm run test` — 93 core suites + 8 server suites ✅
+- `npx eslint` / `npx prettier --check .` ✅
+- `npm run build-prod` and `npm run build-dev` ✅
+- Browser-tested: lobby, solo game, spawn, ticking simulation, HUD (control
+  panel/hotkeys, attack slider, chat, settings modal, radial menu), assets
+  (72 maps, flags, sprites, sounds, music, fonts, icons) ✅
+
+### Run locally
+
+```bash
+npm run inst   # npm ci --ignore-scripts (README-recommended safe install)
+npm run dev    # Vite client :9000 + game server :3000 (2 workers)
+```
+
+### Run in Docker
+
+```bash
+docker compose up -d --build   # game at http://localhost:8080 (PORT=80 for :80)
+```
+
+`docker-compose.yml` + `Dockerfile.dev` are additive to this project: they
+build the client in development mode so the container is fully self-contained
+(GAME_ENV=dev: anonymous play, no Turnstile, no external API). The upstream
+`Dockerfile` is unchanged.
+
+### Expected benign log noise in offline deployments
+
+- Server: `Error polling lobby: fetch failed` for `localhost:8787` — the
+  upstream account/cosmetics API, intentionally absent locally.
+- Browser: failed requests to Google Analytics / Cloudflare beacons / ad
+  networks when offline; the game functions normally without them.

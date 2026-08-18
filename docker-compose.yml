@@ -1,0 +1,32 @@
+# Self-contained local deployment of the OpenFront.io clone.
+#
+# Usage:
+#   docker compose up -d --build
+#   # Game is served at http://localhost:8080  (override with PORT=80)
+#
+# NOTE: this environment has no Docker engine; the image must be built and run
+# on a machine with Docker installed. Everything inside is self-contained:
+# nginx :80 -> master :3000 -> workers :3001-3002, GAME_ENV=dev (no external
+# API, no Turnstile, anonymous play via persistentID).
+
+services:
+  openfront:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        GIT_COMMIT: ${GIT_COMMIT:-local}
+    container_name: openfront-clone
+    ports:
+      - "${PORT:-8080}:80"
+    environment:
+      GAME_ENV: dev
+      DOMAIN: localhost
+      GIT_COMMIT: ${GIT_COMMIT:-local}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:80/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
