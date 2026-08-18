@@ -1,28 +1,32 @@
 # Self-contained local deployment of the OpenFront.io clone.
 #
+# Pulls the image built and published by GitHub Actions (see
+# .github/workflows/docker.yml) to ghcr.io/Atvriders/openfront-clone.
+#
 # Usage:
-#   docker compose up -d --build
+#   docker compose pull && docker compose up -d
 #   # Game is served at http://localhost:3037  (override with PORT=80 etc.)
 #
-# NOTE: this environment has no Docker engine; the image must be built and run
-# on a machine with Docker installed. Everything inside is self-contained:
-# nginx :80 -> master :3000 -> workers :3001-3002, GAME_ENV=dev (no external
-# API, no Turnstile, anonymous play via persistentID).
+# Note: GHCR packages are private by default. If you get a pull error, either
+#   docker login ghcr.io -u Atvriders        # with a personal access token
+# or make the package public at
+#   https://github.com/Atvriders/openfront-clone/packages
+#
+# The image is fully self-contained: nginx :80 -> master :3000 -> workers
+# :3001-3002, GAME_ENV=dev (no external API, no Turnstile, anonymous play via
+# persistentID).
 
 services:
   openfront:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      args:
-        GIT_COMMIT: ${GIT_COMMIT:-local}
+    image: ghcr.io/atvriders/openfront-clone:latest
+    pull_policy: always
     container_name: openfront-clone
     ports:
       - "${PORT:-3037}:80"
     environment:
       GAME_ENV: dev
       DOMAIN: localhost
-      GIT_COMMIT: ${GIT_COMMIT:-local}
+      GIT_COMMIT: ${GIT_COMMIT:-latest}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:80/api/health"]

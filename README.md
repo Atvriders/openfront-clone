@@ -254,15 +254,24 @@ npm run inst   # npm ci --ignore-scripts (README-recommended safe install)
 npm run dev    # Vite client :9000 + game server :3000 (2 workers)
 ```
 
-### Run in Docker
+### Run in Docker (image built by GitHub Actions)
 
 ```bash
-docker compose up -d --build   # game at http://localhost:3037 (PORT=80 for :80)
+docker compose pull && docker compose up -d   # game at http://localhost:3037 (PORT=80 for :80)
 ```
 
-`docker-compose.yml` + `Dockerfile.dev` are additive to this project: they
-build the client in development mode so the container is fully self-contained
-(GAME_ENV=dev: anonymous play, no Turnstile, no external API). The upstream
+`.github/workflows/docker.yml` builds and publishes the image to
+`ghcr.io/atvriders/openfront-clone` on every push to `master` (tags: `latest`,
+`sha`, and the branch name). The compose file pulls that image rather than
+building locally.
+
+> GHCR packages are private by default. If `docker compose pull` fails, either
+> `docker login ghcr.io -u Atvriders` (with a personal access token) or make
+> the package public at
+> https://github.com/Atvriders/openfront-clone/packages
+
+To build locally without CI instead, use the additive `Dockerfile.dev`
+(`docker build -f Dockerfile.dev -t openfront-clone .`). The upstream
 `Dockerfile` is unchanged.
 
 ### Expected benign log noise in offline deployments
