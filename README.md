@@ -257,7 +257,7 @@ npm run dev    # Vite client :9000 + game server :3000 (2 workers)
 ### Run in Docker
 
 ```bash
-docker compose up -d --build   # game at http://localhost:8080 (PORT=80 for :80)
+docker compose up -d --build   # game at http://localhost:3037 (PORT=80 for :80)
 ```
 
 `docker-compose.yml` + `Dockerfile.dev` are additive to this project: they
