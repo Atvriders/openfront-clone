@@ -89,6 +89,7 @@ export class Footer extends LitElement {
             class="hover:text-white transition-colors"
           ></a>
           <span data-i18n="main.copyright"></span>
+          <span class="text-white/40">Made with 🤖 DeepSeek V4 Pro</span>
           <a
             href="/privacy-policy.html"
             data-i18n="main.privacy_policy"

@@ -233,6 +233,8 @@ Thank you for helping make OpenFront better!
 
 ## 🚢 Local 1:1 Clone Deployment (this project)
 
+🤖 Made with DeepSeek V4 Pro
+
 This checkout is a fully verified, self-contained clone. License/attribution
 notices are preserved as required by AGPL (code) and CC BY-SA (assets);
 `proprietary/` remains part of the complete software package per its license.

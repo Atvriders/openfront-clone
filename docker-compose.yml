@@ -1,4 +1,5 @@
 # Self-contained local deployment of the OpenFront.io clone.
+# Made with 🤖 DeepSeek V4 Pro
 #
 # Pulls the image built and published by GitHub Actions (see
 # .github/workflows/docker.yml) to ghcr.io/Atvriders/openfront-clone.
